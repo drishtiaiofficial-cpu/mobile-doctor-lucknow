@@ -19,3 +19,10 @@
 .hero { padding-block: clamp(32px, 8vw, 96px); }
 .hero h1 { font-size: clamp(28px, 7vw, 56px); max-width: 16ch; }
 .hero p { color: var(--muted); font-size: clamp(16px, 2.5vw, 20px); max-width: 48ch; }
+.section { padding-block: clamp(32px, 6vw, 72px); }
+.lead { color: var(--muted); margin: 0 0 24px; }
+.brand-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.brand-tile { display: flex; align-items: center; justify-content: center; min-height: 72px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); font-weight: 600; color: var(--ink); box-shadow: var(--shadow); transition: transform .15s, border-color .15s; }
+.brand-tile:hover { transform: translateY(-2px); border-color: var(--primary); color: var(--primary); }
+@media (min-width: 600px) { .brand-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 900px) { .brand-grid { grid-template-columns: repeat(4, 1fr); } }
