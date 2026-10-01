@@ -1,0 +1,14 @@
+.hero-wrap { position: relative; overflow: hidden; color: #fff; background: linear-gradient(135deg, var(--ink) 0%, #3a0a14 55%, var(--primary-dark) 100%); }
+.hero-track { display: flex; transition: transform .6s ease; }
+.hero-slide { flex: 0 0 100%; display: grid; gap: 16px; align-items: center; padding: 32px 56px 64px; min-height: 460px; }
+.hero-copy h1, .hero-copy h2 { color: #fff; font-size: clamp(26px, 6vw, 52px); max-width: 18ch; }
+.hero-copy p { color: rgba(255,255,255,.8); font-size: clamp(16px, 2.4vw, 20px); max-width: 42ch; }
+.hero-art svg { height: clamp(160px, 38vw, 340px); margin-inline: auto; }
+.btn-gold { background: var(--accent); color: var(--ink); }
+.hero-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 50%; border: 0; background: rgba(255,255,255,.18); color: #fff; font-size: 26px; cursor: pointer; }
+.prev { left: 6px; } .next { right: 6px; }
+.hero-dots { position: absolute; bottom: 14px; left: 0; right: 0; display: flex; justify-content: center; }
+.hero-dots button { width: 32px; height: 32px; background: none; border: 0; cursor: pointer; padding: 0; }
+.hero-dots button::after { content: ""; display: block; width: 10px; height: 10px; margin: auto; border-radius: 50%; background: rgba(255,255,255,.4); }
+.hero-dots button.on::after { background: var(--accent); }
+@media (min-width: 800px) { .hero-slide { grid-template-columns: 1.2fr 1fr; padding: 48px 80px 72px; } }
