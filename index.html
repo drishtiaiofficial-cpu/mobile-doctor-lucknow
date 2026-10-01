@@ -14,14 +14,24 @@
   <link rel="stylesheet" href="assets/css/layout.css">
 </head>
 <body>
+  <div class="ticker" aria-hidden="true"><div class="ticker-track" id="ticker">
+    <span>Screen Replacement</span><span>Battery Replacement</span><span>Charging Port Repair</span><span>Speaker Repair</span><span>Mic Issue Fix</span><span>Camera Repair</span><span>Software Fix</span>
+  </div></div>
   <header class="site-header">
     <div class="container bar">
-      <a href="./" class="brand" data-brand="name">Mobile Doctor Lucknow</a>
-      <a class="btn btn-primary" data-call href="#">Call Now</a>
+      <a href="./" class="brand">
+        <svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect x="7" y="2" width="18" height="28" rx="4" fill="#C8102E"/><path d="M16 10v10M11 15h10" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>
+        <span data-brand="name">Mobile Doctor Lucknow</span>
+      </a>
+      <nav id="nav" class="nav" aria-label="Main">
+        <a href="./">Home</a><a href="#services">Services</a><a href="#about">About</a><a href="#contact">Contact</a>
+      </nav>
+      <a class="btn btn-primary call" data-call href="#">Call Now</a>
+      <button class="menu-btn" id="menu" aria-label="Menu" aria-expanded="false">&#9776;</button>
     </div>
   </header>
   <main class="container hero">
-    <h1 data-brand="hero">Doorstep Mobile Repair in Lucknow</h1>
+    <h1>Doorstep Mobile Repair in Lucknow</h1>
     <p data-brand="tagline"></p>
     <a class="btn btn-primary" href="book.html">Book Now</a>
   </main>
