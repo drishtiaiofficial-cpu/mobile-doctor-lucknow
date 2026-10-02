@@ -30,3 +30,11 @@
 .logo-text { display: flex; flex-direction: column; line-height: 1.05; }
 .logo-text b { font-size: clamp(16px, 4.5vw, 21px); }
 .logo-text small { font-size: 10px; letter-spacing: .32em; color: var(--accent); font-weight: 600; }
+.cards { display: grid; gap: 16px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+.card img, .split img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+.card div { padding: 16px 18px 20px; }
+.card p { margin: 0; color: var(--muted); }
+.split { display: grid; gap: 24px; align-items: center; }
+.split img { border-radius: var(--radius); box-shadow: var(--shadow); }
+@media (min-width: 800px) { .cards, .split { grid-template-columns: 1fr 1fr; } }
