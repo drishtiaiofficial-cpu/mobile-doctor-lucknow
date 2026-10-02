@@ -26,3 +26,18 @@ document.querySelectorAll(".section h2,.lead,.svc,.brand-tile,.badges li,.steps 
 });
 
 document.querySelectorAll("[data-phone]").forEach((e) => { e.textContent = c.phoneDisplay; });
+
+const qb = document.getElementById("qb");
+qb.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const f = new FormData(qb);
+  const err = document.getElementById("qbErr");
+  const msg = f.get("n").trim().length < 2 ? "Please enter your name."
+    : !/^[6-9][0-9]{9}$/.test(f.get("p")) ? "Please enter a valid 10-digit mobile number."
+    : !f.get("b") ? "Please choose your phone brand." : "";
+  err.hidden = !msg;
+  err.textContent = msg;
+  if (msg) return;
+  try { sessionStorage.setItem("md-lead", JSON.stringify({ n: f.get("n").trim(), p: f.get("p") })); } catch {}
+  location.href = "book.html?brand=" + f.get("b") + (f.get("r") ? "&repair=" + f.get("r") : "");
+});
