@@ -1,0 +1,7 @@
+{
+  "warrantyDays": 90,
+  "payAfterRepair": true,
+  "genuineParts": true,
+  "supportHours": "12x7",
+  "repairTime": "30 to 60 minutes"
+}
