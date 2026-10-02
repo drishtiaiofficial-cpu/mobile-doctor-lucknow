@@ -1,6 +1,0 @@
-.ticker { font-size: 15px; font-weight: 600; }
-.ticker-track { gap: 34px; padding: 10px 0; }
-.ticker-track span { display: inline-flex; align-items: center; gap: 10px; }
-.ticker-track span::after { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); margin-left: 24px; }
-.tk { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: var(--ink); flex: none; }
-.tk svg { width: 16px; height: 16px; }
