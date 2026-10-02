@@ -14,3 +14,5 @@ dlg.addEventListener("click", () => dlg.close());
 import "./hero.js";
 
 import "./float.js";
+
+import "./ui.js";

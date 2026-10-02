@@ -1,0 +1,5 @@
+.progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--primary),var(--gold));z-index:100}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+.slide>img{animation:kb 14s ease-out infinite alternate}
+@keyframes kb{to{transform:scale(1.08)}}
