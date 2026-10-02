@@ -41,3 +41,4 @@ qb.addEventListener("submit", (e) => {
   try { sessionStorage.setItem("md-lead", JSON.stringify({ n: f.get("n").trim(), p: f.get("p") })); } catch {}
   location.href = "book.html?brand=" + f.get("b") + (f.get("r") ? "&repair=" + f.get("r") : "");
 });
+document.getElementById("yr").textContent = "\u00a9 " + new Date().getFullYear() + " Mobile Doctor Lucknow";
