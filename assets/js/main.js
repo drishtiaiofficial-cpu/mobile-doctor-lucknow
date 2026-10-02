@@ -16,3 +16,5 @@ import "./hero.js";
 import "./float.js";
 
 import "./ui.js";
+
+import "./home-book.js";
