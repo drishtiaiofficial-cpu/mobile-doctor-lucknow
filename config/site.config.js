@@ -15,9 +15,14 @@ export const siteConfig = {
   phoneDisplay: "+91 70078 82051",
   phoneE164: "+917007882051",
   whatsappE164: "917007882051",
-  contactEmail: "",
+  contactEmail: "Aynul.mirza555@gmail.com",
 
-  social: { instagram: "", youtube: "", facebook: "", googleReview: "" },
+  social: {
+    instagram: "https://www.instagram.com/dr.mobile_ghar_pe_bnwaye_mobil/",
+    youtube: "",
+    facebook: "https://www.facebook.com/share/1Dm5ALNVQS/",
+    googleReview: "",
+  },
 
   colors: { primary: "#C8102E", ink: "#14171F", accent: "#C9A227" },
 
