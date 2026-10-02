@@ -12,3 +12,5 @@ document.getElementById("logoBtn").addEventListener("click", () => dlg.showModal
 dlg.addEventListener("click", () => dlg.close());
 
 import "./hero.js";
+
+import "./float.js";
