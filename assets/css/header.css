@@ -1,0 +1,14 @@
+.site-header { background: #fff; color: var(--ink); border-bottom: 1px solid var(--line); box-shadow: 0 4px 18px rgba(20,23,31,.06); }
+.bar { min-height: 76px; }
+.brand { gap: 12px; }
+.logo-mark { width: 50px; height: 50px; flex: none; }
+.logo-text { line-height: 1; }
+.logo-text b { font-weight: 800; font-size: clamp(17px, 5vw, 26px); color: var(--ink); }
+.logo-text em { font-style: normal; color: var(--primary); }
+.logo-text small { font-size: clamp(7px, 2.1vw, 10px); letter-spacing: .2em; color: var(--muted); font-weight: 600; margin-top: 6px; }
+.nav { background: #fff; }
+.nav a { font-weight: 500; color: var(--ink); border-bottom-color: var(--line); }
+.nav a:hover { color: var(--primary); }
+.menu-btn { color: var(--ink); }
+.call { padding: 0 14px; font-size: 14px; }
+@media (min-width: 800px) { .logo-mark { width: 60px; height: 60px; } .call { padding: 0 24px; font-size: 16px; } }
