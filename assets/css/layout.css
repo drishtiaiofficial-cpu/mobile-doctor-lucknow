@@ -27,3 +27,6 @@
 @media (min-width: 600px) { .brand-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (min-width: 900px) { .brand-grid { grid-template-columns: repeat(4, 1fr); } }
 .ticker-track span { display: inline-flex; align-items: center; gap: 8px; }
+.logo-text { display: flex; flex-direction: column; line-height: 1.05; }
+.logo-text b { font-size: clamp(16px, 4.5vw, 21px); }
+.logo-text small { font-size: 10px; letter-spacing: .32em; color: var(--accent); font-weight: 600; }
