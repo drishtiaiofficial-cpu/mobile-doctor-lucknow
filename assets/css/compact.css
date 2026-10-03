@@ -16,3 +16,24 @@
 .val b{font-size:16px;align-self:end}.val p{font-size:13px;align-self:start}
 .hb>img{display:none}
 @media(min-width:800px){.section{padding-block:64px}.why-grid>img{display:block}.brand-grid{gap:12px}.brand-tile{height:84px}.svc small{display:block}.svc{padding:20px 14px}.val{display:flex;flex-direction:column;text-align:center;padding:24px 18px}.val .bd{width:68px;height:68px;margin-bottom:8px}.hb>img{display:block}}
+/*sz*/
+.hb-sec{padding-block:40px}.hb-sec .lead{margin-bottom:16px;font-size:15px}
+.hb{gap:14px}
+.hb-form{gap:8px;padding:16px;border-radius:18px}
+.hb-form h3{font-size:18px;margin:0 0 2px}
+.hb-form input,.hb-form select{min-height:42px;font-size:15px;padding:0 12px;border-radius:10px}
+.hb-form textarea{min-height:64px;font-size:15px;padding:10px 12px;border-radius:10px}
+.hb-form .chips{gap:6px;margin:0}
+.hb-form .chip{min-height:34px;padding:0 12px;font-size:13px}
+.hb-form .lbl{font-size:13px;margin:4px 0 0}
+.hb-form .btn{min-height:44px;font-size:15px}
+.hb-form .btn-line{min-height:40px;font-size:14px;border-width:1px}
+.hb-form .note{margin:0;font-size:12px}
+.hb>img{display:block;height:170px;min-height:0;border-radius:18px}
+.slide{min-height:clamp(320px,50vh,440px);min-height:clamp(320px,50dvh,440px)}
+.slide-copy{padding-block:28px 60px}
+.slide h1,.slide h2{font-size:clamp(26px,5vw,42px)}
+.slide p{font-size:clamp(15px,2vw,18px);margin-bottom:18px}
+.cta{margin-bottom:16px}
+.why-grid>img{aspect-ratio:4/3}
+@media(min-width:800px){.hb{grid-template-columns:1.1fr .9fr}.hb>img{height:100%;min-height:300px;max-height:460px;align-self:stretch}.hb-sec{padding-block:56px}}
