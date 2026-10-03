@@ -1,0 +1,9 @@
+.stats-sec{background:#fff;text-align:center}
+.stats-sec h2 span{color:var(--primary)}
+.stats-sec .lead{margin:0 auto 26px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);max-width:880px;margin:0 auto}
+.stat{padding:4px 6px}
+.stat+.stat{border-left:2px solid #2b3a55}
+.stat b{display:block;font-size:clamp(30px,8vw,60px);line-height:1.1;font-weight:800;color:var(--primary)}
+.stat b i{font-style:normal}
+.stat span{display:block;margin-top:6px;font-size:clamp(12px,3.2vw,17px);font-weight:500;color:var(--ink)}
