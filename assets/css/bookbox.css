@@ -1,16 +1,14 @@
-.hb{display:grid;gap:18px;align-items:stretch}
-.hb-form{display:grid;gap:10px;align-content:start;padding:clamp(18px,3.5vw,26px);background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}
-.hb-form h3{margin:0;font-size:20px;line-height:1.2}
-.hb-sub{margin:-4px 0 4px;font-size:13px;color:var(--muted)}
-.r2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.hb-form input,.hb-form select,.hb-form textarea{display:block;width:100%;min-width:0;box-sizing:border-box;min-height:44px;padding:0 12px;font:15px var(--font);color:var(--text);background:#fff;border:1px solid var(--line);border-radius:10px}
-.hb-form select{text-overflow:ellipsis}
-.hb-form textarea{min-height:66px;padding:10px 12px;resize:none}
+.hb{display:grid;gap:20px;align-items:stretch}
+.hb-form{display:grid;gap:10px;align-content:start;padding:clamp(20px,4vw,30px);background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow)}
+.hb-form h3{margin:0 0 4px;font-size:22px}
+.hb-form input,.hb-form select,.hb-form textarea{display:block;width:100%;min-width:0;box-sizing:border-box;min-height:var(--tap);padding:0 14px;font:16px var(--font);color:var(--text);background:#fff;border:1px solid var(--line);border-radius:12px}
+.hb-form textarea{min-height:84px;padding:12px 14px;resize:vertical}
 .hb-form input:focus,.hb-form select:focus,.hb-form textarea:focus{outline:0;border-color:var(--primary);box-shadow:0 0 0 3px rgba(200,16,46,.15)}
 .hb-form .hp{position:absolute;left:-9999px;width:1px;height:1px;min-height:0;opacity:0}
-.hb-form .btn{width:100%;min-height:46px;border-radius:10px;font-size:16px}
+.hb-form .btn{width:100%}
 .hb-err{margin:0;font-size:14px;color:var(--primary)}
-.hb-pts{display:flex;flex-wrap:wrap;gap:4px 14px;margin:2px 0 0;padding:0;list-style:none;font-size:12.5px;color:var(--muted)}
+.hb-pts{display:flex;flex-wrap:wrap;gap:6px 16px;margin:6px 0 0;padding:0;list-style:none;font-size:13px;color:var(--muted)}
 .hb-pts li::before{content:"\2713 ";color:var(--primary);font-weight:700}
-.hb>img{width:100%;height:100%;min-height:240px;object-fit:cover;border-radius:18px;box-shadow:var(--shadow)}
-@media(min-width:800px){.hb{grid-template-columns:1.05fr 1fr}}
+.hb-img{position:relative;min-height:240px;overflow:hidden;border-radius:22px;box-shadow:var(--shadow)}
+.hb-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+@media(min-width:800px){.hb{grid-template-columns:1fr 1fr}}
