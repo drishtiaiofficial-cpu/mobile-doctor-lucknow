@@ -1,74 +1,88 @@
 import { siteConfig as c } from "../../config/site.config.js";
-import { BRANDS, REPAIRS } from "./book-data.js";
-import { stepHtml, waText } from "./book-steps.js";
+import { BRANDS, REPAIRS, esc } from "./book-data.js";
 
+const API = c.supabaseUrl + "/functions/v1/quick-handler";
 const root = document.getElementById("bookPage");
-const KEY = "md-draft";
-const blank = () => ({ step: 1, n: "", p: "", e: "", b: "", bt: "", m: "", r: [], x: "", h: "", st: "", lm: "", ar: "", pin: "", lat: "", lng: "", mode: "asap", date: "", slot: "", ok: false, web: "", code: "" });
-const load = () => { try { return { ...blank(), ...JSON.parse(sessionStorage.getItem(KEY)) }; } catch { return blank(); } };
-const save = () => { try { sessionStorage.setItem(KEY, JSON.stringify(S)); } catch {} };
-let S = load();
-
 const qs = new URLSearchParams(location.search);
-if ((qs.get("brand") || qs.get("repair")) && S.code) S = blank();
-let lead = null;
-try { lead = JSON.parse(sessionStorage.getItem("md-lead")); sessionStorage.removeItem("md-lead"); } catch {}
-const pb = lead?.b || qs.get("brand");
-const pr = lead?.r || qs.get("repair");
-if (lead) { S.n = S.n || lead.n || ""; S.p = S.p || lead.p || ""; }
+let lead = {};
+try { lead = JSON.parse(sessionStorage.getItem("md-lead")) || {}; sessionStorage.removeItem("md-lead"); } catch {}
+const blank = () => ({ n: lead.n || "", p: lead.p || "", b: "", bt: "", m: "", r: [], x: "", a: "", when: "asap", lat: "", lng: "", loc: "", hp: "", code: "" });
+let S = blank();
+const pb = lead.b || qs.get("brand"), pr = lead.r || qs.get("repair");
 if (pb && Object.prototype.hasOwnProperty.call(BRANDS, pb)) S.b = pb;
-if (pr && REPAIRS.some((x) => x[0] === pr) && !S.r.includes(pr)) S.r.push(pr);
+if (pr && REPAIRS.some((x) => x[0] === pr)) S.r.push(pr);
 
+const F = (l, i) => "<label>" + l + i + "</label>";
+const inp = (k, x = "") => '<input name="' + k + '" value="' + esc(S[k]) + '" ' + x + ">";
+const chip = (on, attr, t) => '<button type="button" class="chip' + (on ? " on" : "") + '" ' + attr + ">" + t + "</button>";
+const pinOf = () => (S.a.match(/\b\d{6}\b/) || [""])[0];
+const brandName = () => (S.b === "other" ? S.bt.trim() : BRANDS[S.b] || "");
 const err = (m) => { const e = document.getElementById("err"); e.textContent = m; e.hidden = !m; };
-function check(n) {
-  if (n === 1) return S.n.trim().length < 2 ? "Please enter your name." : !/^[6-9][0-9]{9}$/.test(S.p) ? "Please enter a valid 10-digit mobile number." : S.e && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(S.e) ? "Please enter a valid email or leave it empty." : "";
-  if (n === 2) return !S.b ? "Please choose your phone brand." : S.b === "other" && S.bt.trim().length < 2 ? "Please write your brand name." : !S.r.length ? "Please choose what needs fixing." : S.r.includes("other") && S.x.trim().length < 3 ? "Please describe the problem." : "";
-  if (n === 3) return S.h.trim().length < 1 ? "Please enter your house or flat number." : S.st.trim().length < 2 ? "Please enter your street or locality." : !S.ar ? "Please choose your area." : !/^[0-9]{6}$/.test(S.pin) || !c.pincodePrefixes.some((p) => S.pin.startsWith(p)) ? "We currently serve Lucknow only. Please check your pincode." : "";
-  if (n === 4) return S.mode === "slot" && (!S.date || !S.slot) ? "Please choose a day and a time, or pick As soon as possible." : "";
-  return !S.ok ? "Please accept the Terms and Privacy Policy to continue." : S.web ? "Something went wrong. Please try again." : "";
+
+function check() {
+  const pin = pinOf();
+  if (S.n.trim().length < 2) return "Please enter your name.";
+  if (!/^[6-9][0-9]{9}$/.test(S.p)) return "Please enter a valid 10-digit mobile number.";
+  if (brandName().length < 2) return "Please choose your phone brand.";
+  if (!S.r.length) return "Please choose what needs fixing.";
+  if (S.a.trim().length < 5) return "Please enter your address.";
+  if (pin && !c.pincodePrefixes.some((x) => pin.startsWith(x))) return "We currently serve Lucknow only.";
+  return "";
 }
 function render() {
   if (S.code) return done();
-  const dots = [1, 2, 3, 4, 5].map((i) => '<i class="' + (i < S.step ? "ok" : i === S.step ? "now" : "") + '"></i>').join("");
-  root.innerHTML = '<section class="section"><div class="container bk"><p class="stp">Step ' + S.step + " of 5</p><div class=\"dots\">" + dots + "</div>"
-    + '<div class="card">' + stepHtml(S.step, S) + '<p class="err" id="err" hidden></p></div><div class="nav2">'
-    + (S.step > 1 ? '<button type="button" class="btn btn-line" data-back>Back</button>' : "<span></span>")
-    + '<button type="button" class="btn btn-primary" data-next>' + (S.step === 5 ? "Request repair" : "Continue") + "</button></div></div></section>";
-  save();
+  const opts = Object.entries(BRANDS).map(([k, t]) => '<option value="' + k + '"' + (k === S.b ? " selected" : "") + ">" + t + "</option>").join("");
+  const W = [["asap", "As soon as possible"], ["today", "Today"], ["tomorrow", "Tomorrow"]];
+  root.innerHTML = '<section class="section"><div class="container bk"><div class="bkbar"><button type="button" class="bkb" data-back>&larr; Back</button><button type="button" class="bkb bkx" data-close aria-label="Close">&times;</button></div><div class="card"><h2>Book your repair</h2>'
+    + F("Your name", inp("n", 'autocomplete="name" maxlength="60"')) + F("Mobile number", inp("p", 'inputmode="numeric" maxlength="10" autocomplete="tel"'))
+    + F("Phone brand", '<select name="b"><option value="">Choose brand</option>' + opts + "</select>") + (S.b === "other" ? F("Brand name", inp("bt", 'maxlength="40"')) : "")
+    + F("Phone model (optional)", inp("m", 'maxlength="40"')) + '<p class="lbl">What needs fixing?</p><div class="chips">' + REPAIRS.map(([k, t]) => chip(S.r.includes(k), 'data-r="' + k + '"', t)).join("") + "</div>"
+    + F("Address with pincode", '<textarea name="a" rows="3" maxlength="300" placeholder="House or flat, street, area, landmark, pincode">' + esc(S.a) + "</textarea>")
+    + '<button type="button" class="btn btn-line" data-loc>Use my current location</button><p class="note">' + (S.loc || "Optional") + "</p>"
+    + '<p class="lbl">When should we come? (optional)</p><div class="chips">' + W.map(([k, t]) => chip(S.when === k, 'data-when="' + k + '"', t)).join("") + "</div>"
+    + '<input class="hp" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" value="">'
+    + '<p class="note">We currently serve Lucknow only. By booking you agree to our <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy Policy</a>.</p>'
+    + '<p class="err" id="err" hidden></p><button type="button" class="btn btn-primary" data-submit style="width:100%">Book Now</button></div></div></section>';
 }
+const wa = () => ["Hello Mobile Doctor, I have booked a repair.", "Booking ID: " + S.code, "Name: " + S.n, "Phone: " + S.p, "Device: " + brandName() + (S.m ? " " + S.m : ""),
+  "Issue: " + S.r.map((k) => REPAIRS.find((x) => x[0] === k)[1]).join(", "), "Address: " + S.a, S.lat ? "Location: https://www.google.com/maps?q=" + S.lat + "," + S.lng : ""].filter(Boolean).join("\n");
 function done() {
-  const url = "https://wa.me/" + c.whatsappE164 + "?text=" + encodeURIComponent(waText(S, S.code));
-  root.innerHTML = '<section class="section"><div class="container bk"><div class="card fin"><span class="okc">&#10003;</span><h2>Your request is ready</h2><p>Request ID <b>' + S.code + "</b></p>"
-    + "<p>Tap the button to send it on WhatsApp. Your visit is confirmed only after our technician replies.</p>"
-    + '<a class="btn btn-wa" href="' + url + '" target="_blank" rel="noopener">Send on WhatsApp</a><button type="button" class="edit" data-new>Start a new request</button></div></div></section>';
+  const url = "https://wa.me/" + c.whatsappE164 + "?text=" + encodeURIComponent(wa());
+  root.innerHTML = '<section class="section"><div class="container bk"><div class="card fin"><span class="okc">&#10003;</span><h2>Thank you! Booking received</h2><p>Your booking ID <b>' + esc(S.code) + "</b></p>"
+    + "<p>Tap below to send the details on WhatsApp. Our technician will call or message you shortly.</p>"
+    + '<a class="btn btn-wa" href="' + url + '" target="_blank" rel="noopener">Send on WhatsApp</a><button type="button" class="edit" data-new>Book another repair</button></div></div></section>';
   return url;
 }
-root.addEventListener("input", (e) => { const t = e.target; if (t.name) { S[t.name] = t.type === "checkbox" ? t.checked : t.value; save(); } });
-root.addEventListener("change", (e) => {
-  const t = e.target;
-  if (t.type === "checkbox" && t.name) { S[t.name] = t.checked; save(); }
-  else if (t.name === "b") render();
-});
+async function submit(btn) {
+  const m = check(); if (m) return err(m);
+  btn.disabled = true; btn.textContent = "Booking..."; err("");
+  const q = (k) => qs.get(k) || "";
+  const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 15000);
+  try {
+    const r = await fetch(API, { method: "POST", signal: ctl.signal, headers: { "Content-Type": "application/json", apikey: c.supabaseAnonKey }, body: JSON.stringify({
+      name: S.n.trim(), phone: S.p, brand: brandName(), model: S.m.trim(), issues: S.r, note: S.x, address: S.a.trim(), pincode: pinOf(), lat: S.lat, lng: S.lng, when: S.when, hp: S.hp,
+      source: { ad: q("ad"), utm_source: q("utm_source"), utm_medium: q("utm_medium"), utm_campaign: q("utm_campaign"), ref: document.referrer ? new URL(document.referrer).hostname : "" } }) });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok || !j.code) throw new Error(j.error || "Could not book. Please try again or call us.");
+    S.code = j.code; const url = done(); scrollTo(0, 0); window.open(url, "_blank", "noopener");
+  } catch (e) { err(e.name === "AbortError" ? "Slow network. Please try again." : e instanceof TypeError ? "No connection. Please try again or call us." : e.message); btn.disabled = false; btn.textContent = "Book Now"; }
+  clearTimeout(tm);
+}
+root.addEventListener("input", (e) => { if (e.target.name) S[e.target.name] = e.target.value; });
+root.addEventListener("change", (e) => { if (e.target.name === "b") render(); });
 root.addEventListener("click", (e) => {
   const t = e.target.closest("button"); if (!t) return;
-  if (t.dataset.r) { S.r = S.r.includes(t.dataset.r) ? S.r.filter((x) => x !== t.dataset.r) : [...S.r, t.dataset.r]; render(); }
-  else if (t.dataset.mode) { S.mode = t.dataset.mode; render(); }
-  else if (t.dataset.day) { S.date = t.dataset.day; S.slot = ""; render(); }
-  else if (t.dataset.slot) { S.slot = t.dataset.slot; render(); }
-  else if (t.dataset.edit) { S.step = Number(t.dataset.edit); render(); }
-  else if (t.dataset.new !== undefined) { S = blank(); render(); }
-  else if (t.dataset.back !== undefined) { S.step--; render(); }
-  else if (t.id === "locBtn") {
-    const m = document.getElementById("locMsg");
-    if (!navigator.geolocation) { m.textContent = "Location is not available. Please type your address."; return; }
-    m.textContent = "Getting your location...";
-    navigator.geolocation.getCurrentPosition((p) => { S.lat = p.coords.latitude.toFixed(5); S.lng = p.coords.longitude.toFixed(5); save(); m.textContent = "Location added. Please also check the address below."; },
-      () => { m.textContent = "Could not get your location. Please type your address."; }, { enableHighAccuracy: true, timeout: 10000 });
-  } else if (t.dataset.next !== undefined) {
-    const m = check(S.step); if (m) return err(m);
-    if (S.step < 5) { S.step++; render(); scrollTo(0, 0); return; }
-    S.code = "MD-" + Date.now().toString(36).toUpperCase().slice(-5);
-    const url = done(); save(); scrollTo(0, 0); location.href = url;
+  const d = t.dataset;
+  if (d.r) { S.r = S.r.includes(d.r) ? S.r.filter((x) => x !== d.r) : [...S.r, d.r]; render(); }
+  else if (d.when) { S.when = d.when; render(); }
+  else if (d.back !== undefined) { history.length > 1 ? history.back() : (location.href = "./"); }
+  else if (d.close !== undefined) { location.href = "./"; }
+  else if (d.new !== undefined) { S = blank(); render(); }
+  else if (d.submit !== undefined) { submit(t); }
+  else if (d.loc !== undefined) {
+    if (!navigator.geolocation) { S.loc = "Location not available. Please type your address."; return render(); }
+    navigator.geolocation.getCurrentPosition((p) => { S.lat = p.coords.latitude.toFixed(5); S.lng = p.coords.longitude.toFixed(5); S.loc = "Location added. Please also type your address."; render(); },
+      () => { S.loc = "Could not get location. Please type your address."; render(); }, { enableHighAccuracy: true, timeout: 10000 });
   }
 });
 render();

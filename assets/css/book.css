@@ -30,3 +30,6 @@
 .fin{text-align:center}.fin p{margin:6px 0;color:var(--muted)}
 .okc{display:grid;place-items:center;width:64px;height:64px;margin:0 auto 12px;font-size:32px;color:#fff;background:#1E8E5A;border-radius:50%}
 .btn-wa{margin:18px 0 8px;color:#fff;background:#25D366}
+.bkbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.bkb{min-height:44px;min-width:44px;padding:0 16px;font:600 15px var(--font);color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:999px;cursor:pointer}
+.bkx{padding:0;font-size:26px;line-height:1}
