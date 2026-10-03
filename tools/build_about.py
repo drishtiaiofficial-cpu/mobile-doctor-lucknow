@@ -12,9 +12,7 @@ sec = ('<section class="section about" id="about"><div class="container about-gr
  '<p>Mobile Doctor is a doorstep mobile repair service in Lucknow. Instead of leaving your phone at a shop and waiting, you book online, choose a time that suits you, and our technician visits your home or office.</p>'
  '<p>Tell us your phone and what is wrong, and we take care of the rest. We keep things simple and honest, with clear communication at every step and a final price confirmed after inspection.</p>'
  '<a class="btn btn-primary" href="./#book">Book a repair</a></div>'
- '<div class="about-col why"><span class="eyebrow">Why choose us</span><h2>Why choose Mobile Doctor</h2>'
- '<p>We repair your phone at your doorstep, so you save the time and effort of travelling across the city. Book in a few taps, pick a slot, and our technician comes to you.</p>'
- '<ul class="badges">' + badges + '</ul></div></div></section>\n')
+ '</div></section>\n')
 s = open("index.html").read()
 s = re.sub(r'<section class="section about" id="about">.*?</section>\n?', "", s, flags=re.S)
 s = s.replace('<section class="section" id="brands">', sec + '<section class="section" id="brands">', 1)

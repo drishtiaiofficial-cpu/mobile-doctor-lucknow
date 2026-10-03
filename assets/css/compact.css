@@ -1,0 +1,18 @@
+.section{padding-block:40px}
+.hb-sec{scroll-margin-top:76px;padding-top:28px}
+.brand-grid{grid-template-columns:repeat(4,1fr);gap:8px}
+.brand-tile{height:64px;padding:8px 10px;border-radius:12px}
+.brand-tile svg{height:26px}
+.tx,.tx.realme,.tx.other{font-size:13px}.tx.realme{padding:3px 8px}.tx.poco{font-size:14px}
+.svc{padding:14px 8px;gap:2px}.svc small{display:none}.svc b{font-size:14px}
+.svc .bd{width:46px;height:46px;margin-bottom:4px}.svc .bd svg{width:22px;height:22px}
+.steps{gap:10px;margin-top:18px}.steps li{padding:16px 16px 16px 64px}
+.steps li::before{left:16px;top:14px;font-size:28px}.steps h3{font-size:17px}.steps p{font-size:14px}
+.why-grid>img{display:none}.checks{gap:12px}
+.about-grid{grid-template-columns:1fr!important;max-width:760px}
+.val-grid{gap:10px}
+.val{display:grid;grid-template-columns:44px 1fr;column-gap:14px;row-gap:0;text-align:left;align-items:center;padding:14px 16px}
+.val .bd{grid-row:1/3;width:44px;height:44px;margin:0}.val .bd svg{width:22px;height:22px}
+.val b{font-size:16px;align-self:end}.val p{font-size:13px;align-self:start}
+.hb>img{display:none}
+@media(min-width:800px){.section{padding-block:64px}.why-grid>img{display:block}.brand-grid{gap:12px}.brand-tile{height:84px}.svc small{display:block}.svc{padding:20px 14px}.val{display:flex;flex-direction:column;text-align:center;padding:24px 18px}.val .bd{width:68px;height:68px;margin-bottom:8px}.hb>img{display:block}}
