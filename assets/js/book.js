@@ -6,7 +6,7 @@ const root = document.getElementById("bookPage");
 const qs = new URLSearchParams(location.search);
 let lead = {};
 try { lead = JSON.parse(sessionStorage.getItem("md-lead")) || {}; sessionStorage.removeItem("md-lead"); } catch {}
-const blank = () => ({ n: lead.n || "", p: lead.p || "", b: "", bt: "", m: "", r: [], x: "", a: "", when: "asap", lat: "", lng: "", loc: "", hp: "", code: "" });
+const blank = () => ({ n: lead.n || "", p: lead.p || "", b: "", bt: "", m: "", r: [], x: "", a: "", when: "asap", lat: "", lng: "", loc: "", hp: "", pc: "", code: "" });
 let S = blank();
 const pb = lead.b || qs.get("brand"), pr = lead.r || qs.get("repair");
 if (pb && Object.prototype.hasOwnProperty.call(BRANDS, pb)) S.b = pb;
@@ -15,7 +15,7 @@ if (pr && REPAIRS.some((x) => x[0] === pr)) S.r.push(pr);
 const F = (l, i) => "<label>" + l + i + "</label>";
 const inp = (k, x = "") => '<input name="' + k + '" value="' + esc(S[k]) + '" ' + x + ">";
 const chip = (on, attr, t) => '<button type="button" class="chip' + (on ? " on" : "") + '" ' + attr + ">" + t + "</button>";
-const pinOf = () => (S.a.match(/\b\d{6}\b/) || [""])[0];
+const pinOf = () => S.pc.trim();
 const brandName = () => (S.b === "other" ? S.bt.trim() : BRANDS[S.b] || "");
 const err = (m) => { const e = document.getElementById("err"); e.textContent = m; e.hidden = !m; };
 
@@ -26,7 +26,8 @@ function check() {
   if (brandName().length < 2) return "Please choose your phone brand.";
   if (!S.r.length) return "Please choose what needs fixing.";
   if (S.a.trim().length < 5) return "Please enter your address.";
-  if (pin && !c.pincodePrefixes.some((x) => pin.startsWith(x))) return "We currently serve Lucknow only.";
+  if (!/^[0-9]{6}$/.test(pin)) return "Please enter your 6-digit pincode.";
+  if (!c.pincodePrefixes.some((x) => pin.startsWith(x))) return "We currently serve Lucknow only.";
   return "";
 }
 function render() {
@@ -37,7 +38,7 @@ function render() {
     + F("Your name", inp("n", 'autocomplete="name" maxlength="60"')) + F("Mobile number", inp("p", 'inputmode="numeric" maxlength="10" autocomplete="tel"'))
     + F("Phone brand", '<select name="b"><option value="">Choose brand</option>' + opts + "</select>") + (S.b === "other" ? F("Brand name", inp("bt", 'maxlength="40"')) : "")
     + F("Phone model (optional)", inp("m", 'maxlength="40"')) + '<p class="lbl">What needs fixing?</p><div class="chips">' + REPAIRS.map(([k, t]) => chip(S.r.includes(k), 'data-r="' + k + '"', t)).join("") + "</div>"
-    + F("Address with pincode", '<textarea name="a" rows="3" maxlength="300" placeholder="House or flat, street, area, landmark, pincode">' + esc(S.a) + "</textarea>")
+    + F("Address", '<textarea name="a" rows="3" maxlength="300" placeholder="House or flat, street, area, landmark">' + esc(S.a) + "</textarea>") + F("Pincode", inp("pc", 'inputmode="numeric" maxlength="6" autocomplete="postal-code"'))
     + '<button type="button" class="btn btn-line" data-loc>Use my current location</button><p class="note">' + (S.loc || "Optional") + "</p>"
     + '<p class="lbl">When should we come? (optional)</p><div class="chips">' + W.map(([k, t]) => chip(S.when === k, 'data-when="' + k + '"', t)).join("") + "</div>"
     + '<input class="hp" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" value="">'
@@ -68,6 +69,20 @@ async function submit(btn) {
   } catch (e) { err(e.name === "AbortError" ? "Slow network. Please try again." : e instanceof TypeError ? "No connection. Please try again or call us." : e.message); btn.disabled = false; btn.textContent = "Book Now"; }
   clearTimeout(tm);
 }
+async function gotPos(p) {
+  const la = p.coords.latitude, lo = p.coords.longitude;
+  if (la < 26.7 || la > 27.05 || lo < 80.75 || lo > 81.15) { S.loc = "Your location is outside Lucknow. We currently serve Lucknow only."; return render(); }
+  S.lat = la.toFixed(5); S.lng = lo.toFixed(5); S.loc = "Location added. Finding your address..."; render();
+  try {
+    const r = await fetch("https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&zoom=18&lat=" + S.lat + "&lon=" + S.lng);
+    const a = (await r.json()).address || {};
+    if (!S.a.trim()) S.a = [a.road, a.neighbourhood || a.suburb, a.city_district || a.city].filter(Boolean).join(", ");
+    const pc = (a.postcode || "").replace(/\s/g, "");
+    if (!S.pc && /^[0-9]{6}$/.test(pc)) S.pc = pc;
+    S.loc = "Location added. Please check the address and add your house number or landmark.";
+  } catch { S.loc = "Location added. Please type your address and pincode."; }
+  render();
+}
 root.addEventListener("input", (e) => { if (e.target.name) S[e.target.name] = e.target.value; });
 root.addEventListener("change", (e) => { if (e.target.name === "b") render(); });
 root.addEventListener("click", (e) => {
@@ -81,7 +96,7 @@ root.addEventListener("click", (e) => {
   else if (d.submit !== undefined) { submit(t); }
   else if (d.loc !== undefined) {
     if (!navigator.geolocation) { S.loc = "Location not available. Please type your address."; return render(); }
-    navigator.geolocation.getCurrentPosition((p) => { S.lat = p.coords.latitude.toFixed(5); S.lng = p.coords.longitude.toFixed(5); S.loc = "Location added. Please also type your address."; render(); },
+    navigator.geolocation.getCurrentPosition(gotPos,
       () => { S.loc = "Could not get location. Please type your address."; render(); }, { enableHighAccuracy: true, timeout: 10000 });
   }
 });
