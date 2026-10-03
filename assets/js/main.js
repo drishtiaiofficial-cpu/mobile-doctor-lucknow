@@ -20,3 +20,7 @@ import "./ui.js";
 import "./home-book.js";
 
 import "./stats.js";
+
+import "./social.js";
+
+import "./reviews.js";
