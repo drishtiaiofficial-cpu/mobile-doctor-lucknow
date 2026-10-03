@@ -20,11 +20,11 @@ if (root && !Object.prototype.hasOwnProperty.call(B, q)) {
 } else if (root) {
   const [name, color] = B[q];
   document.title = name + " Repair in Lucknow | Mobile Doctor";
-  const tiles = R.map(([k, t, p]) => '<a class="rp" href="./?brand=' + q + "&repair=" + k + '#book"><svg viewBox="0 0 24 24" aria-hidden="true">' + p + "</svg><b>" + t + "</b></a>").join("");
+  const tiles = R.map(([k, t, p]) => '<a class="rp" href="book.html?brand=' + q + "&repair=" + k + '"><svg viewBox="0 0 24 24" aria-hidden="true">' + p + "</svg><b>" + t + "</b></a>").join("");
   root.innerHTML = '<section class="section"><div class="container"><a class="back" href="./#brands">&larr; All brands</a><div class="bp-grid">'
     + '<div class="phone-wrap" id="phoneWrap"></div><div><span class="eyebrow">Repair at your doorstep</span><h1>' + name + " repair in Lucknow</h1>"
     + '<div class="rp-grid">' + tiles + '</div><ul class="mini" id="mini"></ul>'
-    + '<a class="btn btn-primary" href="./?brand=' + q + '#book">Book Your Repair</a></div></div></div></section>';
+    + '<a class="btn btn-primary" href="book.html?brand=' + q + '">Book Your Repair</a></div></div></div></section>';
   const wrap = document.getElementById("phoneWrap");
   const fallback = () => {
     wrap.innerHTML = '<div class="phone" style="--bc:' + color + '"><i class="cam"></i><img class="pl" src="assets/img/brands/' + q + '.svg" alt="" width="90" height="60"><span class="pn">' + name + "</span></div>";

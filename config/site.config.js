@@ -15,19 +15,14 @@ export const siteConfig = {
   phoneDisplay: "+91 70078 82051",
   phoneE164: "+917007882051",
   whatsappE164: "917007882051",
-  contactEmail: "Aynul.mirza555@gmail.com",
+  contactEmail: "",
 
-  social: {
-    instagram: "https://www.instagram.com/dr.mobile_ghar_pe_bnwaye_mobil/",
-    youtube: "",
-    facebook: "https://www.facebook.com/share/1Dm5ALNVQS/",
-    googleReview: "",
-  },
+  social: { instagram: "", youtube: "", facebook: "", googleReview: "" },
 
   colors: { primary: "#C8102E", ink: "#14171F", accent: "#C9A227" },
 
-  supabaseUrl: "https://ufiwhibeizvscloxdvln.supabase.co",
-  supabaseAnonKey: "sb_publishable_4sZoAPfha-9pTuq5vs37tw_VEgDV-wL",
+  supabaseUrl: "",
+  supabaseAnonKey: "",
 
   metaPixelId: "",
   siteUrl: "",

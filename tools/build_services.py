@@ -8,7 +8,7 @@ P = {
  "audio": '<path d="M4 9v6h4l5 4V5L8 9zM16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/>',
 }
 S = [("display","Display","Cracked, dead or flickering screens"),("battery","Battery","Fast draining or swollen battery"),("charging","Charging port","Not charging or loose connection"),("back-panel","Back panel","Cracked or damaged back glass"),("software","Software","Hanging, slow or update problems"),("audio","Speaker and mic","Low sound or voice not clear")]
-cards = "".join(f'<a class="svc" href="./?repair={k}#book"><span class="bd"><svg viewBox="0 0 24 24" aria-hidden="true">{P[k]}</svg></span><b>{t}</b><small>{d}</small></a>' for k, t, d in S)
+cards = "".join(f'<a class="svc" href="book.html?repair={k}"><span class="bd"><svg viewBox="0 0 24 24" aria-hidden="true">{P[k]}</svg></span><b>{t}</b><small>{d}</small></a>' for k, t, d in S)
 services = ('<section class="section" id="services"><div class="container"><span class="eyebrow">What we repair</span><h2>Repairs at your doorstep</h2>'
  '<p class="lead">Pick the problem and book a visit. Final price is confirmed after inspection.</p><div class="svc-grid">' + cards + '</div></div></section>')
 T = [("Book your slot","Choose your phone, the problem and a time that suits you."),("Our technician comes to you","We visit your home or office in Lucknow at your slot."),("Repair at your doorstep","Your phone is checked and repaired in front of you.")]
