@@ -17,8 +17,9 @@ const BAR = '<div class="bkbar"><button type="button" class="bkb" data-back>&lar
 const PRE0 = embed ? "" : '<section class="section"><div class="container bk">';
 const PRE = embed ? "" : PRE0 + BAR;
 const POST = embed ? "" : "</div></section>";
-const F = (l, i) => "<label>" + l + i + "</label>";
-const inp = (k, x = "") => '<input name="' + k + '" value="' + esc(S[k]) + '" ' + x + ">";
+const F = (l, i) => embed ? '<label class="ph"><span class="sr">' + l + "</span>" + i + "</label>" : "<label>" + l + i + "</label>";
+const PH = { n: "Your name", p: "Mobile number", bt: "Brand name", m: "Phone model (optional)", pc: "Pincode" };
+const inp = (k, x = "") => '<input name="' + k + '" value="' + esc(S[k]) + '" placeholder="' + PH[k] + '" ' + x + ">";
 const chip = (on, attr, t) => '<button type="button" class="chip' + (on ? " on" : "") + '" ' + attr + ">" + t + "</button>";
 const pinOf = () => S.pc.trim();
 const brandName = () => (S.b === "other" ? S.bt.trim() : BRANDS[S.b] || "");
@@ -39,22 +40,22 @@ function render() {
   if (S.code) return done();
   const opts = Object.entries(BRANDS).map(([k, t]) => '<option value="' + k + '"' + (k === S.b ? " selected" : "") + ">" + t + "</option>").join("");
   const W = [["asap", "As soon as possible"], ["today", "Today"], ["tomorrow", "Tomorrow"]];
-  root.innerHTML = PRE + '<div class="card">' + (embed ? "" : "<h2>Book your repair</h2>")
+  root.innerHTML = PRE + (embed ? "<h3>Request a repair</h3>" : '<div class="card"><h2>Book your repair</h2>')
     + F("Your name", inp("n", 'autocomplete="name" maxlength="60"')) + F("Mobile number", inp("p", 'inputmode="numeric" maxlength="10" autocomplete="tel"'))
-    + F("Phone brand", '<select name="b"><option value="">Choose brand</option>' + opts + "</select>") + (S.b === "other" ? F("Brand name", inp("bt", 'maxlength="40"')) : "")
+    + F("Phone brand", '<select name="b"><option value="">Select phone brand</option>' + opts + "</select>") + (S.b === "other" ? F("Brand name", inp("bt", 'maxlength="40"')) : "")
     + F("Phone model (optional)", inp("m", 'maxlength="40"')) + '<p class="lbl">What needs fixing?</p><div class="chips">' + REPAIRS.map(([k, t]) => chip(S.r.includes(k), 'data-r="' + k + '"', t)).join("") + "</div>"
     + F("Address", '<textarea name="a" rows="3" maxlength="300" placeholder="House or flat, street, area, landmark">' + esc(S.a) + "</textarea>") + F("Pincode", inp("pc", 'inputmode="numeric" maxlength="6" autocomplete="postal-code"'))
     + '<button type="button" class="btn btn-line" data-loc>Use my current location</button><p class="note">' + (S.loc || "Optional") + "</p>"
     + '<p class="lbl">When should we come? (optional)</p><div class="chips">' + W.map(([k, t]) => chip(S.when === k, 'data-when="' + k + '"', t)).join("") + "</div>"
     + '<input class="hp" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" value="">'
     + '<p class="note">We currently serve Lucknow only. By booking you agree to our <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy Policy</a>.</p>'
-    + '<p class="err" id="err" hidden></p><button type="button" class="btn btn-primary" data-submit style="width:100%">Book Now</button></div>' + POST;
+    + '<p class="err" id="err" hidden></p><button type="button" class="btn btn-primary" data-submit style="width:100%">Book Now</button>' + (embed ? '<ul class="hb-pts"><li>Doorstep service</li><li>Final price after inspection</li><li>Lucknow only</li></ul>' : "</div>") + POST;
 }
 const wa = () => ["Hello Mobile Doctor, I have booked a repair.", S.code !== "-" ? "Booking ID: " + S.code : "", "Name: " + S.n, "Phone: " + S.p, "Device: " + brandName() + (S.m ? " " + S.m : ""),
   "Issue: " + S.r.map((k) => REPAIRS.find((x) => x[0] === k)[1]).join(", "), "Address: " + S.a, S.lat ? "Location: https://www.google.com/maps?q=" + S.lat + "," + S.lng : ""].filter(Boolean).join("\n");
 function done() {
   const url = "https://wa.me/" + c.whatsappE164 + "?text=" + encodeURIComponent(wa());
-  root.innerHTML = PRE0 + '<div class="card fin"><span class="okc">&#10003;</span><h2>Thank you! Booking received</h2>' + (S.code !== "-" ? "<p>Your booking ID <b>" + esc(S.code) + "</b></p>" : "")
+  root.innerHTML = PRE0 + '<div class="' + (embed ? "" : "card ") + 'fin"><span class="okc">&#10003;</span><h2>Thank you! Booking received</h2>' + (S.code !== "-" ? "<p>Your booking ID <b>" + esc(S.code) + "</b></p>" : "")
     + "<p>Opening WhatsApp with your details. If it does not open, tap the button below. Our technician will contact you shortly.</p>"
     + '<a class="btn btn-wa" href="' + url + '" target="_blank" rel="noopener">Send on WhatsApp</a><button type="button" class="edit" data-new>Book another repair</button></div>' + POST;
   return url;

@@ -4,8 +4,10 @@ BR = [("apple", "Apple"), ("samsung", "Samsung"), ("xiaomi", "Xiaomi / Redmi"), 
 RP = [("display", "Display"), ("charging", "Charging port"), ("back-panel", "Back panel"), ("battery", "Battery"), ("software", "Software"), ("audio", "Speaker or mic"), ("other", "Something else")]
 opt = lambda L, ph: '<option value="">' + ph + "</option>" + "".join('<option value="' + k + '">' + v + "</option>" for k, v in L)
 html = ('<section class="section hb-sec" id="book"><div class="container"><span class="eyebrow">Book a visit</span><h2>Book your repair</h2>'
- '<p class="lead">Fill this once. Your details go straight to WhatsApp and our technician reaches you shortly.</p>'
- '<div id="bookPage"></div><script type="module" src="assets/js/book.js"></script></div></section>')
+ '<p class="lead">Technicians reach you shortly and repair your phone at your doorstep.</p><div class="hb">'
+ '<div class="hb-form" id="bookPage"></div>'
+ '<img src="assets/img/tools-mat.webp" alt="Phone repair tools on a work mat" loading="lazy"></div>'
+ '<script type="module" src="assets/js/book.js"></script></div></section>')
 s = open("index.html").read()
 s = re.sub(r"<!--S:cta-->.*?<!--/S:cta-->\n?", "", s, flags=re.S)
 open("index.html", "w").write(s)

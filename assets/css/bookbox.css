@@ -8,3 +8,10 @@
 .hb-pts li::before{content:"\2713 ";color:var(--primary);font-weight:700}
 .hb>img{width:100%;height:100%;min-height:260px;object-fit:cover;border-radius:22px;box-shadow:var(--shadow)}
 @media(min-width:800px){.hb{grid-template-columns:1fr 1fr}}
+.hb-form label{display:block;margin:0}
+.hb-form .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.hb-form input,.hb-form select,.hb-form textarea{display:block;width:100%;box-sizing:border-box}
+.hb-form textarea{min-height:92px;padding:12px 14px;font:16px var(--font);color:var(--text);background:#fff;border:1px solid var(--line);border-radius:12px;resize:vertical}
+.hb-form textarea:focus{outline:0;border-color:var(--primary);box-shadow:0 0 0 3px rgba(200,16,46,.15)}
+.hb-form .lbl{margin:6px 0 0}.hb-form .chips{margin:0 0 4px}.hb-form .note{margin:0}
+.hb-form .btn{width:100%}.hb-form .btn-line{color:var(--ink);background:#fff;border:1px solid var(--line)}
