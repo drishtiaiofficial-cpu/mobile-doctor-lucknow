@@ -9,7 +9,7 @@ const pb = qs.get("brand"), pr = qs.get("repair");
 if (pb && Object.prototype.hasOwnProperty.call(BRANDS, pb)) S.b = pb;
 if (pr && REPAIRS.some((x) => x[0] === pr)) S.r.push(pr);
 
-const PH = { n: "Your name", p: "Mobile number", bt: "Brand name", m: "Phone model (optional)", pc: "Pincode" };
+const PH = { n: "Your name", p: "Mobile number", bt: "Brand name", m: "e.g. Galaxy A52", pc: "Pincode" };
 const F = (l, i) => "<label>" + l + i + "</label>";
 const inp = (k, x = "") => '<input name="' + k + '" value="' + esc(S[k]) + '" placeholder="' + PH[k] + '" ' + x + ">";
 const chip = (on, a, t) => '<button type="button" class="chip' + (on ? " on" : "") + '" ' + a + ">" + t + "</button>";
@@ -33,10 +33,10 @@ function render() {
   if (S.code) return done();
   const opts = Object.entries(BRANDS).map(([k, t]) => '<option value="' + k + '"' + (k === S.b ? " selected" : "") + ">" + t + "</option>").join("");
   const W = [["asap", "As soon as possible"], ["today", "Today"], ["tomorrow", "Tomorrow"]];
-  root.innerHTML = '<section class="section"><div class="container bk">' + BAR + '<div class="card"><h2>Book your repair</h2>'
-    + F("Your name", inp("n", 'autocomplete="name" maxlength="60"')) + F("Mobile number", inp("p", 'inputmode="numeric" maxlength="10" autocomplete="tel"'))
-    + F("Phone brand", '<select name="b"><option value="">Select phone brand</option>' + opts + "</select>") + (S.b === "other" ? F("Brand name", inp("bt", 'maxlength="40"')) : "")
-    + F("Phone model (optional)", inp("m", 'maxlength="40"')) + '<p class="lbl">What needs fixing?</p><div class="chips">' + REPAIRS.map(([k, t]) => chip(S.r.includes(k), 'data-r="' + k + '"', t)).join("") + "</div>"
+  root.innerHTML = '<section class="section"><div class="container bk">' + BAR + '<div class="card"><h2>Book your repair</h2><p class="sub">Fill in the details and our technician will get back to confirm.</p>'
+    + '<div class="g2">' + F("Your name", inp("n", 'autocomplete="name" maxlength="60"')) + F("Mobile number", inp("p", 'inputmode="numeric" maxlength="10" autocomplete="tel"')) + '</div>'
+    + '<div class="g2">' + F("Brand", '<select name="b"><option value="">Select brand</option>' + opts + "</select>") + F("Model (optional)", inp("m", 'maxlength="40"')) + '</div>' + (S.b === "other" ? F("Brand name", inp("bt", 'maxlength="40"')) : "")
+    + '<p class="lbl">What needs fixing?</p><div class="chips">' + REPAIRS.map(([k, t]) => chip(S.r.includes(k), 'data-r="' + k + '"', t)).join("") + "</div>"
     + F("Address", '<textarea name="a" rows="3" maxlength="300" placeholder="House or flat, street, area, landmark">' + esc(S.a) + "</textarea>")
     + F("Pincode", inp("pc", 'inputmode="numeric" maxlength="6" autocomplete="postal-code"'))
     + '<button type="button" class="btn btn-line" data-loc>Use my current location</button><p class="note">' + (S.loc || "Optional") + "</p>"
@@ -50,8 +50,9 @@ const wa = () => ["Hello Mobile Doctor, I want to book a repair.", S.code !== "-
   S.lat ? "Location: https://www.google.com/maps?q=" + S.lat + "," + S.lng : ""];
 function done() {
   const url = waLink(wa());
-  root.innerHTML = '<section class="section"><div class="container bk"><div class="card fin"><span class="okc">&#10003;</span><h2>Thank you! Request received</h2>'
-    + (S.code !== "-" ? "<p>Booking ID <b>" + esc(S.code) + "</b></p>" : "") + "<p>Opening WhatsApp with your details. If it does not open, tap the button below. Your visit is confirmed once our technician replies.</p>"
+  root.innerHTML = '<section class="section"><div class="container bk"><div class="card fin"><span class="okc">&#10003;</span><h2>Thank you, ' + esc(S.n.trim().split(" ")[0]) + '!</h2><p class="fin-sub">Your repair request has been received.</p>'
+    + (S.code !== "-" ? '<p class="fin-id">Booking ID <b>' + esc(S.code) + "</b></p>" : "")
+    + '<ul class="fin-pts"><li>WhatsApp opens with your details. If it does not, tap the green button below.</li><li>Our technician replies to confirm your visit and time.</li><li>The final price is confirmed after inspection, before any work starts.</li></ul>'
     + '<a class="btn btn-wa" href="' + url + '" target="_blank" rel="noopener">Send on WhatsApp</a><button type="button" class="edit" data-new>Book another repair</button></div></div></section>';
   return url;
 }

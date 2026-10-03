@@ -33,3 +33,22 @@
 .bkbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .bkb{min-height:44px;min-width:44px;padding:0 16px;font:600 15px var(--font);color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:999px;cursor:pointer}
 .bkx{padding:0;font-size:26px;line-height:1}
+/*polish*/
+.bk{max-width:600px}
+.card{padding:clamp(18px,3.5vw,28px);border-radius:18px}
+.card h2{margin:0 0 4px;font-size:clamp(20px,3.6vw,24px)}
+.card .sub{margin:0 0 16px;font-size:13px;color:var(--muted)}
+.card label{margin-bottom:10px;font-size:13px}
+.card input:not([type=checkbox]),.card select,.card textarea{min-height:44px;margin-top:4px;padding:8px 12px;font-size:15px;border-radius:10px}
+.card textarea{min-height:72px;resize:none}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}.g2 label{min-width:0}
+.lbl{margin:6px 0;font-size:13px}
+.chips{gap:6px;margin-bottom:12px}
+.chip{min-height:38px;padding:0 13px;font-size:14px}
+.card .btn-line{width:100%;min-height:42px;font-size:14px}
+.note{margin:4px 0 12px;font-size:12.5px}
+.fin-sub{font-size:15px}.fin-id{margin:10px 0}.fin-id b{padding:3px 10px;background:#fff5f6;border-radius:8px;color:var(--primary)}
+.fin-pts{margin:14px 0 0;padding:0;list-style:none;text-align:left;font-size:14px;color:var(--muted)}
+.fin-pts li{position:relative;margin:8px 0;padding-left:24px}
+.fin-pts li::before{content:"\2713";position:absolute;left:0;color:var(--primary);font-weight:700}
+.fin .btn-wa{width:100%}
