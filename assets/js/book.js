@@ -12,6 +12,11 @@ const pb = lead.b || qs.get("brand"), pr = lead.r || qs.get("repair");
 if (pb && Object.prototype.hasOwnProperty.call(BRANDS, pb)) S.b = pb;
 if (pr && REPAIRS.some((x) => x[0] === pr)) S.r.push(pr);
 
+const embed = !!(root.closest && root.closest("#book"));
+const BAR = '<div class="bkbar"><button type="button" class="bkb" data-back>&larr; Back</button><button type="button" class="bkb bkx" data-close aria-label="Close">&times;</button></div>';
+const PRE0 = embed ? "" : '<section class="section"><div class="container bk">';
+const PRE = embed ? "" : PRE0 + BAR;
+const POST = embed ? "" : "</div></section>";
 const F = (l, i) => "<label>" + l + i + "</label>";
 const inp = (k, x = "") => '<input name="' + k + '" value="' + esc(S[k]) + '" ' + x + ">";
 const chip = (on, attr, t) => '<button type="button" class="chip' + (on ? " on" : "") + '" ' + attr + ">" + t + "</button>";
@@ -34,7 +39,7 @@ function render() {
   if (S.code) return done();
   const opts = Object.entries(BRANDS).map(([k, t]) => '<option value="' + k + '"' + (k === S.b ? " selected" : "") + ">" + t + "</option>").join("");
   const W = [["asap", "As soon as possible"], ["today", "Today"], ["tomorrow", "Tomorrow"]];
-  root.innerHTML = '<section class="section"><div class="container bk"><div class="bkbar"><button type="button" class="bkb" data-back>&larr; Back</button><button type="button" class="bkb bkx" data-close aria-label="Close">&times;</button></div><div class="card"><h2>Book your repair</h2>'
+  root.innerHTML = PRE + '<div class="card">' + (embed ? "" : "<h2>Book your repair</h2>")
     + F("Your name", inp("n", 'autocomplete="name" maxlength="60"')) + F("Mobile number", inp("p", 'inputmode="numeric" maxlength="10" autocomplete="tel"'))
     + F("Phone brand", '<select name="b"><option value="">Choose brand</option>' + opts + "</select>") + (S.b === "other" ? F("Brand name", inp("bt", 'maxlength="40"')) : "")
     + F("Phone model (optional)", inp("m", 'maxlength="40"')) + '<p class="lbl">What needs fixing?</p><div class="chips">' + REPAIRS.map(([k, t]) => chip(S.r.includes(k), 'data-r="' + k + '"', t)).join("") + "</div>"
@@ -43,31 +48,35 @@ function render() {
     + '<p class="lbl">When should we come? (optional)</p><div class="chips">' + W.map(([k, t]) => chip(S.when === k, 'data-when="' + k + '"', t)).join("") + "</div>"
     + '<input class="hp" name="hp" tabindex="-1" autocomplete="off" aria-hidden="true" value="">'
     + '<p class="note">We currently serve Lucknow only. By booking you agree to our <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy Policy</a>.</p>'
-    + '<p class="err" id="err" hidden></p><button type="button" class="btn btn-primary" data-submit style="width:100%">Book Now</button></div></div></section>';
+    + '<p class="err" id="err" hidden></p><button type="button" class="btn btn-primary" data-submit style="width:100%">Book Now</button></div>' + POST;
 }
-const wa = () => ["Hello Mobile Doctor, I have booked a repair.", "Booking ID: " + S.code, "Name: " + S.n, "Phone: " + S.p, "Device: " + brandName() + (S.m ? " " + S.m : ""),
+const wa = () => ["Hello Mobile Doctor, I have booked a repair.", S.code !== "-" ? "Booking ID: " + S.code : "", "Name: " + S.n, "Phone: " + S.p, "Device: " + brandName() + (S.m ? " " + S.m : ""),
   "Issue: " + S.r.map((k) => REPAIRS.find((x) => x[0] === k)[1]).join(", "), "Address: " + S.a, S.lat ? "Location: https://www.google.com/maps?q=" + S.lat + "," + S.lng : ""].filter(Boolean).join("\n");
 function done() {
   const url = "https://wa.me/" + c.whatsappE164 + "?text=" + encodeURIComponent(wa());
-  root.innerHTML = '<section class="section"><div class="container bk"><div class="card fin"><span class="okc">&#10003;</span><h2>Thank you! Booking received</h2><p>Your booking ID <b>' + esc(S.code) + "</b></p>"
-    + "<p>Tap below to send the details on WhatsApp. Our technician will call or message you shortly.</p>"
-    + '<a class="btn btn-wa" href="' + url + '" target="_blank" rel="noopener">Send on WhatsApp</a><button type="button" class="edit" data-new>Book another repair</button></div></div></section>';
+  root.innerHTML = PRE0 + '<div class="card fin"><span class="okc">&#10003;</span><h2>Thank you! Booking received</h2>' + (S.code !== "-" ? "<p>Your booking ID <b>" + esc(S.code) + "</b></p>" : "")
+    + "<p>Opening WhatsApp with your details. If it does not open, tap the button below. Our technician will contact you shortly.</p>"
+    + '<a class="btn btn-wa" href="' + url + '" target="_blank" rel="noopener">Send on WhatsApp</a><button type="button" class="edit" data-new>Book another repair</button></div>' + POST;
   return url;
 }
 async function submit(btn) {
   const m = check(); if (m) return err(m);
   btn.disabled = true; btn.textContent = "Booking..."; err("");
   const q = (k) => qs.get(k) || "";
-  const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 15000);
+  const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 12000);
+  let code = "";
   try {
     const r = await fetch(API, { method: "POST", signal: ctl.signal, headers: { "Content-Type": "application/json", apikey: c.supabaseAnonKey }, body: JSON.stringify({
       name: S.n.trim(), phone: S.p, brand: brandName(), model: S.m.trim(), issues: S.r, note: S.x, address: S.a.trim(), pincode: pinOf(), lat: S.lat, lng: S.lng, when: S.when, hp: S.hp,
       source: { ad: q("ad"), utm_source: q("utm_source"), utm_medium: q("utm_medium"), utm_campaign: q("utm_campaign"), ref: document.referrer ? new URL(document.referrer).hostname : "" } }) });
     const j = await r.json().catch(() => ({}));
-    if (!r.ok || !j.code) throw new Error(j.error || "Could not book. Please try again or call us.");
-    S.code = j.code; const url = done(); scrollTo(0, 0); window.open(url, "_blank", "noopener");
-  } catch (e) { err(e.name === "AbortError" ? "Slow network. Please try again." : e instanceof TypeError ? "No connection. Please try again or call us." : e.message); btn.disabled = false; btn.textContent = "Book Now"; }
+    if (r.status >= 400 && r.status < 500 && j.error) { clearTimeout(tm); err(j.error); btn.disabled = false; btn.textContent = "Book Now"; return; }
+    code = j.code || "";
+  } catch {}
   clearTimeout(tm);
+  S.code = code || "-"; const url = done();
+  if (embed) document.getElementById("book").scrollIntoView();
+  setTimeout(() => { location.href = url; }, 400);
 }
 async function gotPos(p) {
   const la = p.coords.latitude, lo = p.coords.longitude;

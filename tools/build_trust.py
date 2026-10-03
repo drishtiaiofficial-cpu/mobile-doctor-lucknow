@@ -25,7 +25,7 @@ cards = "".join(f'<div class="val"><span class="bd"><svg viewBox="0 0 24 24" ari
 vals = '<section class="section vals"><div class="container val-grid">' + cards + '</div></section>'
 cta = ('<section class="cta-band"><div class="container"><h2>Book your repair</h2>'
        '<p>Share your phone and the problem, pick a time, and our technician will confirm your visit.</p>'
-       '<a class="btn btn-light" href="book.html">Book Now</a></div></section>')
+       '<a class="btn btn-light" href="./#book">Book Now</a></div></section>')
 call = ('<section class="section call-sec"><div class="container"><h2>Still have any questions?</h2>'
         '<a class="btn btn-primary" data-call href="#">Call our technician</a></div></section>')
 put("why", why, "<!--S:faq-->")
