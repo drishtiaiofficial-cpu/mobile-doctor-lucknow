@@ -26,8 +26,8 @@ export const siteConfig = {
 
   colors: { primary: "#C8102E", ink: "#14171F", accent: "#C9A227" },
 
-  supabaseUrl: "",
-  supabaseAnonKey: "",
+  supabaseUrl: "https://ufiwhibeizvscloxdvln.supabase.co",
+  supabaseAnonKey: "sb_publishable_4sZoAPfha-9pTuq5vs37tw_VEgDV-wL",
 
   metaPixelId: "",
   siteUrl: "",
