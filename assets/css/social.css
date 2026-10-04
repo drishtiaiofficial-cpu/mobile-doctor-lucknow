@@ -1,7 +1,8 @@
-.footer .foot-social{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;padding:0}
+.footer .foot-social{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px;padding:0}
 .footer .foot-social[hidden]{display:none}
-.footer .foot-social a{display:grid;place-items:center;width:40px;height:40px;padding:0;color:#fff;border:1px solid rgba(255,255,255,.28);border-radius:50%;transition:background .2s,border-color .2s}
+.footer .foot-social a{display:grid;place-items:center;width:46px;height:46px;padding:0;color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:50%;transition:background .2s,border-color .2s}
 .footer .foot-social a:hover{background:var(--primary);border-color:var(--primary)}
-.foot-social svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.foot-social svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .contact-card[hidden],.footer a[hidden]{display:none}
+@media(max-width:799px){.foot-grid{grid-template-columns:1fr 1fr;gap:28px 16px}.foot-brand,.foot-grid>div:last-child{grid-column:1/-1}}
 @media(min-width:900px){.contact-grid{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}}

@@ -1,7 +1,7 @@
 import { siteConfig as c } from "../../config/site.config.js";
 const IC = {
   instagram: '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>',
-  facebook: '<path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8.5c0-.3.2-.5.5-.5z"/>',
+  facebook: '<path fill="currentColor" stroke="none" d="M13.5 21v-8h2.7l.5-3.2h-3.2V7.9c0-.9.3-1.6 1.7-1.6h1.6V3.4c-.3 0-1.2-.2-2.2-.2-2.4 0-4 1.5-4 4.1v2.5H7.8V13h2.7v8z"/>',
   youtube: '<rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.5v5l4.5-2.5z" fill="currentColor"/>',
   email: '<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M3.5 7l8.5 6 8.5-6"/>',
 };
